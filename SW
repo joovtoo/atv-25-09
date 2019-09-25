@@ -1,0 +1,58 @@
+enable 
+clock set 10:25:00 25 sep 2019
+configure terminal
+ntp server 200.160.0.8
+clock timezone BR -0 0
+hostname SW-01
+banner motd "ACESSO APENAS PARA INTEGRANTES DO GRUPO 1"
+enable secret grupo1th3b3st
+username rick privilege 15 secret senharick
+username joao privilege 15 secret senhajoao
+ip domain-name grupo1.local
+crypto key generate rsa general-keys modulus 1024
+line console 0
+password th3b3stgrup01
+login local
+exec-timeout 9
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 9
+exit
+service password-encryption
+interface vlan 100
+description INTERFACE DE GERENCIAMENTO
+no shutdown
+exit
+ip default-gateway 192.168.1.1
+vlan 10
+name Vlan10
+exit
+interface fastEthernet 0/1
+switchport mode access
+switchport access vlan 10
+description Rede1
+exit
+vlan 20
+name Vlan20
+exit
+interface fastEthernet 0/2
+switchport mode access
+switchport access vlan 20
+description Rede2
+exit
+vlan 30
+name Vlan30
+exit
+interface fastEthernet 0/3
+switchport mode access
+switchport access vlan 30
+description Rede3
+exit
+interface gigabitethernet 0/1
+switchport mode trunk
+switchport trunk native vlan 100
+switchport trunk allowed vlan 10,20,30,100
+description CONEXAO COM GRUPO grupo5.local
+exit
+do wr
