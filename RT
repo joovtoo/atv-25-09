@@ -1,0 +1,71 @@
+enable
+clock set 10:56:00 25 sep 2019
+configure terminal
+hostname RT-01
+banner motd "SOMENTE PESSOAS AUTORIZADAS!"
+enable secret SENHAROUTER@2019
+service password-encryption
+ip domain-name grupo5.Local
+crypto key generate rsa general-key modulus 1024
+username GabrielSilva privilege 15 secret TARGARYEN#05
+username ErikBianchi privilege 15 secret TARGARYEN#90
+username joao privilege 15 secret senhajoao
+username rick privilege 15 secret senharick
+login block-for 180 attempts 3 within 60
+security passwords min-length 8
+line console 0
+password SENHART#05
+login local
+exit
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 9
+exit
+interface gigabitEthernet 0/0
+no shutdown
+exit
+interface gigabitEthernet 0/0.10
+encapsulation dot1Q 10
+ip address 192.168.5.129 255.255.255.224
+description REDE de SECRETARIA
+exit
+interface gigabitEthernet 0/0.20
+encapsulation dot1Q 20
+ip address 192.168.5.1 255.255.255.128
+description REDE de ALUNOS
+exit
+interface gigabitEthernet 0/0.30
+encapsulation dot1Q 30
+ip address 192.168.5.161 255.255.255.240
+description REDE de TI
+exit
+interface gigabitEthernet 0/0.100
+encapsulation dot1Q 100
+ip address 192.168.5.177 255.255.255.248
+description REDE de EQUIPAMENTOS
+exit
+interface gigabitEthernet 0/1
+no shutdown
+exit
+interface gigabitEthernet 0/1.10
+encapsulation dot1Q 10
+ip address 192.168.1.129 255.255.255.224
+description REDE VLAN 10
+exit
+interface gigabitEthernet 0/1.20
+encapsulation dot1Q 20
+ip address 192.168.1.1 255.255.255.128
+description REDE VLAN 20
+exit
+interface gigabitEthernet 0/1.30
+encapsulation dot1Q 30
+ip address 192.168.1.161 255.255.255.240
+description REDE VLAN 30
+exit
+interface gigabitEthernet 0/0.100
+encapsulation dot1Q 100
+ip address 192.168.5.177 255.255.255.248
+description REDE VLAN 100
+exit
+do wr
